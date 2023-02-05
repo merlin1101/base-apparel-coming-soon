@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css"> <!-- Custom Styles -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Frontend Mentor | Base Apparel coming soon page</title>
+</head>
+<body>
+    <header>
+        <a href="#"><img src="./images/logo.svg" alt="base apparel"></a>
+    </header>
+    <section class="hero-img">
+        <img src="./images/hero-desktop.jpg" alt="hero-desktop" class="desk-img">
+        <img src="./images/hero-mobile.jpg" alt="hero-mobile" class="mobile-img">
+    </section>
+    <section class="newsletter">
+        <h1 class="head0 head">We're</h1>
+        <h1 class="head1 head">coming</h1>
+        <h1 class="head2 head">soon</h1>
+        <p class="para">Hello fellow shoppers! We're currently building our new fashion store. Add your email below to stay up-to-date with announcements and our launch deals.</p>
+        <form class="subscribe">
+            <input type="email" name="email" placeholder="Email Address" id="email">
+            <button class="subscribe-btn" type="submit"><img src="./images/icon-arrow.svg"></button>
+            <img src="./images/icon-error.svg" class="error-icon">
+        </form>
+        <p id="error-msg">&nbsp;</p>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var subscribeEle = document.querySelector('button.subscribe-btn');
+
+            function removeMsg() {
+                setTimeout(() => {
+                    document.querySelector('#error-msg').style.opacity = 0;
+                    document.getElementById('email').blur();
+                    document.querySelector('.error-icon').classList.remove('msg-show');
+                    setTimeout(() => {
+                        document.querySelector('#error-msg span').remove();
+                    }, 500);
+                }, 2500);
+            }
+
+            function appendMsg(msg) {
+                const para = document.createElement('span');
+                const node = document.createTextNode(msg);
+                para.appendChild(node);
+                document.querySelector('#error-msg').appendChild(para);
+                document.getElementById('email').focus();
+                document.querySelector('#error-msg').style.opacity = 1;
+            }
+
+            function addErrorMsg(msg) {
+                appendMsg(msg);
+                document.querySelector('.error-icon').classList.add('msg-show');
+                removeMsg();
+            }
+
+            function addSuccessMsg(msg) {
+                appendMsg(msg);
+                document.querySelector('#error-msg span').classList.add('success');
+                removeMsg();
+            }
+
+            subscribeEle.addEventListener('click', (event) => {
+                event.preventDefault();
+                var email = document.getElementById("email").value;
+                if(email.trim().length === 0) {
+                    const emptyMsg = "Please enter an email";
+                    addErrorMsg(emptyMsg);
+                } else {
+                    const invalidMsg = "Please provide a valid email";
+                    const successMsg = "Thank you for your subscription!";
+                    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    if(email.match(mailformat) == null)
+                    {
+                        addErrorMsg(invalidMsg);
+                    } else {
+                        addSuccessMsg(successMsg);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
